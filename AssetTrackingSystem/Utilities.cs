@@ -1,4 +1,4 @@
-﻿namespace TodoList;
+﻿namespace AssetTrackingSystem;
 
 public static class Utilities
 {

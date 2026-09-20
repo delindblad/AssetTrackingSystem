@@ -1,8 +1,9 @@
-﻿namespace AssetTrackingSystem;
+﻿namespace MenuKit;
 
+//Abstract base class for menu pages
 public abstract class MenuPage
 {
-    public MenuPage? Result { get; set; } = null;
+    public MenuPage? Context { get; set; } = null;
     public MenuPage? Parent { get; set; }
     public List<MenuPage> ChildPages { get; set; }
     public string Title { get; set; }
@@ -11,17 +12,20 @@ public abstract class MenuPage
     {
         Title = title;
         ChildPages = new List<MenuPage>();
-        Result = Parent = parent;
+        Context = Parent = parent;
     
         
     }
+    //Adds child pages
     public void AddChildPage(MenuPage page)
     {
         ChildPages.Add(page);
     }
 
+    //Displays information when loading page
     public abstract void Display();
-    public abstract void Interact();
-    
+    //Handle interaction here, returns int signaling result
+    public abstract int Interact();
+    //Runs page, returns new context
     public abstract MenuPage Run();
 }
