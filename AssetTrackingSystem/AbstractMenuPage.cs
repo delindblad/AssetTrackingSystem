@@ -1,24 +1,25 @@
 ﻿namespace MenuKit;
 
 //Abstract base class for menu pages
-public abstract class MenuPage
+public abstract class AbstractMenuPage
 {
-    public MenuPage? Context { get; set; } = null;
-    public MenuPage? Parent { get; set; }
-    public List<MenuPage> ChildPages { get; set; }
+    public AbstractMenuPage? Context { get; set; } = null;
+    public AbstractMenuPage? Parent { get; set; }
+    public List<AbstractMenuPage> ChildPages { get; set; }
     public string Title { get; set; }
 
-    public MenuPage(string title, MenuPage? parent)
+    public AbstractMenuPage(string title, AbstractMenuPage? parent)
     {
         Title = title;
-        ChildPages = new List<MenuPage>();
+        ChildPages = new List<AbstractMenuPage>();
         Context = Parent = parent;
     
         
     }
     //Adds child pages
-    public void AddChildPage(MenuPage page)
+    public void AddChildPage(AbstractMenuPage page)
     {
+        page.Parent = this;
         ChildPages.Add(page);
     }
 
@@ -27,5 +28,5 @@ public abstract class MenuPage
     //Handle interaction here, returns int signaling result
     public abstract int Interact();
     //Runs page, returns new context
-    public abstract MenuPage Run();
+    public abstract AbstractMenuPage Run();
 }

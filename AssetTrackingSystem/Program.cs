@@ -6,14 +6,16 @@ namespace AssetTrackingSystem;
 class Program
 {
     static void Main(string[] args)
-    {
-       // Test();
-       CurrencyTest();
+    {   
+        Run();
+        
     }
-    
-    static void Test()
+
+    static void Run()
     {
+        //Create asset tracker
         AssetTracker assetTracker;
+        //If there's an assets.json file, load it
         if (File.Exists("assets.json"))
         {
             try
@@ -28,59 +30,31 @@ class Program
                 Console.WriteLine(e);
                 throw;
             }
-            
+
         }
         else
+        //Otherwise, create a new one
         {
             assetTracker = new AssetTracker();
-
-            assetTracker.AddAsset(AssetType.Desktop, "Apple", "Mac Mini M4", new DateTime(2024, 6, 6),
-                1100, 990, Location.London);
-            assetTracker.AddAsset(AssetType.Desktop, "Apple", "Mac Mini M5", new DateTime(2026, 6, 6),
-                1100, 990, Location.London);
-            assetTracker.AddAsset(AssetType.Mobile, "Apple", "iPhone 17", new DateTime(2023, 1, 7),
-                800, 750, Location.Frankfurt);
-            assetTracker.AddAsset(AssetType.Laptop, "Lenovo", "Think Pad", new DateTime(2026, 5, 6),
-                800, 750, Location.NewYork);
-            assetTracker.AddAsset(AssetType.Tablet, "Apple", "iPad Air 4", new DateTime(2024, 1, 10),
-                900, 850, Location.Frankfurt);
-            assetTracker.AddAsset(AssetType.Tablet, "Apple", "iPad Air 3", new DateTime(2022, 1, 10),
-                900, 850, Location.Frankfurt);
-        }
-        
-
-
-        assetTracker.PrintByType();
-        Console.WriteLine();
-        assetTracker.PrintByBrand();
-        Console.WriteLine();
-        assetTracker.PrintByOffice();
-        Console.WriteLine();
-        assetTracker.PrintByModel();
-        Console.WriteLine();
-        assetTracker.PrintByPurchaseDate();
-        Console.WriteLine();
-        assetTracker.PrintByID();
-        Console.WriteLine();
-        try
-        {
-            Utilities.WritelnGreen($"Saving to {"assets.json"}");
-            string jsonString = JsonSerializer.Serialize(assetTracker);
-            File.WriteAllText("assets.json", jsonString);
             
         }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        //Update currency data
+        assetTracker.UpdateCurrecyData();
+        //Create root page
+        var root = new RootPage("ASSET TRACKER type 'Q' TO QUIT", assetTracker);
+        
+        root.AddChildPage(new ShowAssetsPage("SHOW ASSETS", root, assetTracker));
+        root.AddChildPage(new AddAssetPage("ADD ASSET", root, assetTracker));
 
-    }
-
-    public static void CurrencyTest()
-    {
-        var fx = new Freecurrencyapi("fca_live_GyuUHAV7ziIvpoHqYrSx5lGpSgmmme8xkXbOepyN");
-        Console.WriteLine(fx.Status());
-
+       
+       AbstractMenuPage? context = root;
+       while (true)
+       {
+           context = context.Run();
+           if (context == null!)
+           {
+               return;
+           }
+       }
     }
 }
