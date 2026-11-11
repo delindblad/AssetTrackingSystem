@@ -44,7 +44,7 @@ Will run automatically as described above, or just run the executable. And follo
 Only me.
 
 ## Notes
-Serialization to .json of abstract classes seems to be unsupported. I have therefor not used polymorphism for the "Asset" type. I have however used it in other parts of the application related to the interface.
+Serialization to .json of abstract classes seems to be unsupported, so I have not used polymorphism for the "Asset" type. I have however used it in other parts of the application related to the interface.
 
 ## Future improvements
 Support for removing and modifying assets. Automatic purge after a certain amount of time. Option to mark as broken/missing.
